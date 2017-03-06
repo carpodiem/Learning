@@ -1,16 +1,14 @@
-def read_file(dishes):
+def read_file():
 	cook_book = dict()
 	with open ('dishes.txt', encoding = 'utf-8') as f:
 		while True:
 			ingredients = []
 			dish = f.readline().strip()
-			if dish in dishes:
-				cook_book[dish] = []
+			cook_book[dish] = []
 			ingredients_count = int(f.readline().strip())
 			for _ in range(ingredients_count):
 				ingredient = f.readline().strip().split(' | ')
-				if dish in dishes:
-					cook_book[dish].append({'ingredient_name':ingredient[0], 'quantity': int(ingredient[1]), 'measure': ingredient[2]})
+				cook_book[dish].append({'ingredient_name':ingredient[0], 'quantity': int(ingredient[1]), 'measure': ingredient[2]})
 			line = f.readline()
 			if line == '':
 				break
@@ -18,7 +16,7 @@ def read_file(dishes):
 	
 def get_shop_list_by_dishes(dishes, persons_count):
   shop_list = {}
-  cook_book = read_file(dishes)
+  cook_book = read_file()
   for dish in dishes:
     for ingredient in cook_book[dish]:
       new_shop_list_item = dict(ingredient)
