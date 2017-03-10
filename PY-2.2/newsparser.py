@@ -7,6 +7,7 @@ def frequent_10(dict_numbered):
 			if dict_numbered[key] > max_repeated:
 				max_repeated = dict_numbered[key]
 				key_freq = key
+			# требуется проверка, если разные слова повторяются одинакове количество раз	
 			# elif dict_numbered[key] = max_repeated:
 				# key_freq = [key_freq, key]
 		dict_freq[key_freq] = max_repeated
