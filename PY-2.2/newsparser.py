@@ -99,6 +99,6 @@ def file_open_format2(filename, charset):
 
 		
 file_open('newsafr.json', check_encoding('newsafr.json'))
-file_open('newscy.json', 'cp1251')
+file_open('newscy.json', 'koi8_r')
 file_open('newsfr.json',  check_encoding('newsfr.json'))
 file_open_format2('newsit.json', check_encoding('newsit.json'))
