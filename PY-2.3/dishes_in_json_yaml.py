@@ -13,15 +13,15 @@ def open_dish_yaml_file(file_new):
 	from pprint import pprint 
 	with open(file_new, encoding = 'utf_8') as yaml_file:
 		cook_book = yaml.load(yaml_file)
-		pprint(cook_book)
+		# pprint(cook_book)
 	return cook_book
 
 # заменяет в файле книгу рецептов книгой с добавленным рецептом
-def add_recipe_json(dish_dict, dish_file):
+def add_recipe_json(dish_dict_to_add, dish_file):
 	import json
 	from pprint import pprint
 	cook_book = open_dish_file(dish_file)
-	for course, dishes in dish_dict.items():
+	for course, dishes in dish_dict_to_add.items():
 		for dish, ingredients in dishes.items():
 			cook_book['Мамины рецепты'][course][dish] = ingredients
 	pprint(cook_book)
@@ -39,13 +39,15 @@ def dishes_compact(dishes, cook_book):
 	return dishes_list
 
 # Возвращает список с требуемыми покупками
-def get_shop_list_by_dishes(dishes_dict, persons_count):
+def get_shop_list_by_dishes(dishes_dict_compact, persons_count):
 	shop_list = {}
-	for dish, ingredients in dishes_dict.items():
+	for dish, ingredients in dishes_dict_compact.items():
 		for ingredient in ingredients:
 			new_shop_list_item = dict(ingredient)
+			new_shop_list_item['quantity'] *= persons_count
 			if  new_shop_list_item['ingredient'] not in shop_list:
 				shop_list[new_shop_list_item['ingredient']] = new_shop_list_item
+				print
 			else:
 				shop_list[new_shop_list_item['ingredient']]['quantity'] += new_shop_list_item['quantity']
 	return shop_list
@@ -75,24 +77,28 @@ def user_input():
 	return dishes_input, persons_count_input
 
 def adding_menu():
-	course = input('Введите раздел в Маминых рецептах:  ').lower()
+	section = input('Введите раздел в Маминых рецептах:  ').lower()
 	dish = input('Введите название блюда:  ').lower()
 	dish_element = dict()
-	dish_element[course] = {dish: []}
+	dish_element[section] = {dish: []}
 	while True:
-		separate = input('Введите ингредиент, количество и меру через пробел:  ').split()
-		if separate == []:
+		ingredient_input = input('Введите ингредиент, количество и меру через пробел:  ').split()
+		if ingredient_input == []:
 			break
 		else: 
-			dish_element[course][dish].append({'ingredient': separate[0].lower(), 
-				'quantity': separate[1].lower(), 'measure': separate[2].lower()}
+			dish_element[section][dish].append(
+				{
+					'ingredient': ingredient_input[0].lower(), 
+					'quantity': ingredient_input[1].lower(), 
+					'measure': ingredient_input[2].lower()
+				}
 			)
 	return dish_element
 		
 # Пользовательское меню
 def user_menu(command):
 	if command == '1':
-		dishes,persons_count = user_input()
+		dishes, persons_count = user_input()
 		create_shop_list_json(dishes, persons_count)
 	elif command == '2':
 		dishes, persons_count = user_input()

@@ -62,6 +62,28 @@
           "quantity": 1,
           "measure": "шт"
         }
+      ],
+      "греческий салат": [
+        {
+          "ingredient": "брынза",
+          "quantity": "50",
+          "measure": "гр"
+        },
+        {
+          "ingredient": "помидоры",
+          "quantity": "100",
+          "measure": "гр"
+        },
+        {
+          "ingredient": "масло",
+          "quantity": "20",
+          "measure": "мл"
+        },
+        {
+          "ingredient": "оливки",
+          "quantity": "8",
+          "measure": "шт"
+        }
       ]
     }
   }
