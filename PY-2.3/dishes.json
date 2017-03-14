@@ -1,0 +1,68 @@
+{
+  "Мамины рецепты": {
+    "завтраки": {
+      "яичница": [
+        {
+          "ingredient": "яйцо",
+          "quantity": 2,
+          "measure": "шт"
+        },
+        {
+          "ingredient": "помидор",
+          "quantity": 100,
+          "measure": "гр"
+        }
+      ],
+      "апельсиновый сок": [
+        {
+          "ingredient": "апельсин",
+          "quantity": "2",
+          "measure": "шт"
+        }
+      ]
+    },
+    "основные блюда": {
+      "стейк": [
+        {
+          "ingredient": "мясо",
+          "quantity": 300,
+          "measure": "гр"
+        },
+        {
+          "ingredient": "специи",
+          "quantity": 5,
+          "measure": "гр"
+        },
+        {
+          "ingredient": "масло",
+          "quantity": 10,
+          "measure": "мл"
+        }
+      ]
+    },
+    "салаты": {
+      "салат": [
+        {
+          "ingredient": "огурцы",
+          "quantity": 100,
+          "measure": "гр"
+        },
+        {
+          "ingredient": "помидоры",
+          "quantity": 100,
+          "measure": "гр"
+        },
+        {
+          "ingredient": "масло",
+          "quantity": 100,
+          "measure": "мл"
+        },
+        {
+          "ingredient": "лук",
+          "quantity": 1,
+          "measure": "шт"
+        }
+      ]
+    }
+  }
+}
