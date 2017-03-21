@@ -71,40 +71,24 @@ def file_open(filename, charset):
 		news_quantity = len(news['rss']['channel']['item'])
 		all_words = []
 		for i in range(news_quantity):
-			all_words += words_obtaining(news['rss']['channel']['item'][i]['description']['__cdata'])
+			# Проверка того, какой тип файла открыт (со словарем в поле description или без)
+			if isinstance(news['rss']['channel']['item'][i]['description'], dict):
+				all_words += words_obtaining(news['rss']['channel']['item'][i]['description']['__cdata'])
+			else:
+				all_words += words_obtaining(news['rss']['channel']['item'][i]['description'])
 		freq_10 = frequent_10(frequent_words(all_words))
+		# Сортировка словаря в кортеж со значениями по убыванию
+		frequent10 = sorted(freq_10.items(), key=lambda x: x[1], reverse=True)
 		print('Исследуем файл с новостями ', filename)
 		print('   Слово', ' ' * 13, '|', 'Кол-во повторов')
 		print('-' * 40)
-		for word in freq_10:
-			spaces = 18 - len(word)
-			print('  ',word,' ' * spaces, '|', freq_10[word])
+		for word in frequent10:
+			spaces = 18 - len(word[0])
+			print('  ',word[0],' ' * spaces, '|', word[1])
 		print('-' * 40)
 		print('')
 
-# Функция для работы с файлами другого формата
-def file_open_format2(filename, charset):
-	import json
-	from pprint import pprint
-	with open (filename, encoding = charset) as newsfile:
-		news = json.load(newsfile)
-		news_quantity = len(news['rss']['channel']['item'])
-		all_words = []
-		for i in range(news_quantity):
-			all_words += words_obtaining(news['rss']['channel']['item'][i]['description'])
-		freq_10 = frequent_10(frequent_words(all_words))
-		print('Исследуем файл с новостями ', filename)
-		print('   Слово', ' ' * 13, '|', 'Кол-во повторов')
-		print('-' * 40)
-		for word in freq_10:
-			spaces = 18 - len(word)
-			print('  ',word,' ' * spaces, '|', freq_10[word])
-		print('-' * 40)
-		print('')
-	
-
-		
 file_open('newsafr.json', check_encoding('newsafr.json'))
 file_open('newscy.json', 'koi8_r')
 file_open('newsfr.json',  check_encoding('newsfr.json'))
-file_open_format2('newsit.json', check_encoding('newsit.json'))
+file_open('newsit.json', check_encoding('newsit.json'))
