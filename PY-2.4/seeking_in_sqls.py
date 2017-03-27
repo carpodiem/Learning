@@ -21,14 +21,12 @@ def print_file_path(files_list_to_print):
 def take_files(directory):
     import glob
     import os.path
-    migrations = directory
-    all_sql_files = glob.glob(os.path.join(migrations, "*.sql"))
+    all_sql_files = glob.glob(os.path.join(directory, "*.sql"))
     return all_sql_files
 
 def iterate_files(files, what_to_find):
     needed_files = []
     for file in files:
-        # print(file)
         if search_in_file(file, what_to_find):
             needed_files.append(file)
     return needed_files
