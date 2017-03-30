@@ -47,11 +47,10 @@ def connections():
     friends_of_friends = dict()
     for friend in my_friends_list['response']['items']:
         if 'deactivated' not in friend.keys():
-            pprint(friend)
             friend_name = friend['first_name'] + ' ' + friend['last_name']
             friends_of_friends[friend_name] = get_friends_of_friend(friend['id'])
         time.sleep(1) # Задержка в секунду, так как ВК не позволяет делать больше 1000 запросов в секунду
-        return friends_of_friends
+    return friends_of_friends
 
 # Записываем полученный список в файл, чтобы не отправлять постоянные запросы в ВК
 def list_to_file(list_of_json_friends):
