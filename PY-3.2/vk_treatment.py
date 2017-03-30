@@ -81,7 +81,6 @@ def print_friends(friends_crossings):
 def cross_connections(friends_connections):
     crossconnections = set()
     for account_name, ids in friends_connections.items():
-        new_friends_list = friends_connections
         for name, id_search in friends_connections.items():
             crossing = []
             if name != account_name:
