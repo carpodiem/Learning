@@ -25,10 +25,10 @@ def translate_it(text_file, target_file, from_lang, to_lang='ru'):
                 'text': line,
                 'lang': '{0}-{1}' .format(from_lang, to_lang),
             }
-
             response = requests.get(URL, params=params)
             json_ = response.json()
             text.append(' '.join(json_['text']))
+
     with open(target_file, 'w', encoding='utf_8') as translated_f:
         translated_f.writelines(text)
 
