@@ -26,10 +26,9 @@ def image_threding(images):
     result_dir = os.path.join(os.getcwd(), 'Result')
     if 'Result' not in os.listdir(os.getcwd()):
         os.mkdir(result_dir)
-    if __name__ == '__main__':
-        with Pool(processes=2) as file_pool:
+    with Pool(processes=2) as file_pool:
             file_pool.map(resize_image, images)
 
-
-images = list_of_files('Source')
-image_threding(images)
+if __name__ == '__main__':
+    images = list_of_files('Source')
+    image_threding(images)
