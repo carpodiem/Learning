@@ -35,6 +35,7 @@ class YandexManagement(YandexBase):
         counters_list = response.json()['counters']
         return counters_list
 
+
 class YandexCounters(YandexBase):
     _STAT_URL = 'https://api-metrika.yandex.ru/stat/v1/'
 

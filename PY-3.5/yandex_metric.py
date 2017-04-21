@@ -69,6 +69,7 @@ class YandexMetric(object):
         visits_count = response.json()['data'][0]['metrics'][0]
         return visits_count
 
+
 metrika = YandexMetric(TOKEN)
 pprint(metrika.counter_list())
 print('-----------------------------------')
