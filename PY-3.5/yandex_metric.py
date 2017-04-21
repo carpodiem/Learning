@@ -15,6 +15,7 @@ auth_data = {
 
 TOKEN = 'AQAAAAAKpzb1AAQxfv_b08ESXEFmglNdM-6MCVI' # получили токен
 
+
 class YandexMetric(object):
     _STAT_URL = 'https://api-metrika.yandex.ru/stat/v1/'
     _MANAGEMENT_URL = 'https://api-metrika.yandex.ru/management/v1/'
