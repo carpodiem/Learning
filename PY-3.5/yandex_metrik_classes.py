@@ -13,21 +13,20 @@ auth_data = {
 
 # print('?'.join((AUTH_URL, urlencode(auth_data))))
 
-TOKEN = 'AQAAAAAKpzb1AAQxfv_b08ESXEFmglNdM-6MCVI' # получили токен
 
-class YandexMetric(object):
-    _STAT_URL = 'https://api-metrika.yandex.ru/stat/v1/'
-    _MANAGEMENT_URL = 'https://api-metrika.yandex.ru/management/v1/'
-
-    def __init__(self, token = None):
-        self.token = token
+class YandexBase():
+    _TOKEN = 'AQAAAAAKpzb1AAQxfv_b08ESXEFmglNdM-6MCVI'  # полученный токен
 
     def get_header(self):
         return {
             'Content-Type': 'application/json',
-            'Authorization': 'OAuth {}'.format(self.token),
+            'Authorization': 'OAuth {}'.format(self._TOKEN),
             'User-Agent': 'asdasdasd'
         }
+
+
+class YandexManagement(YandexBase):
+    _MANAGEMENT_URL = 'https://api-metrika.yandex.ru/management/v1/'
 
     def counter_list(self):
         url = urljoin(self._MANAGEMENT_URL, 'counters')
@@ -35,6 +34,9 @@ class YandexMetric(object):
         response = requests.get(url, headers=headers)
         counters_list = response.json()['counters']
         return counters_list
+
+class YandexCounters(YandexBase):
+    _STAT_URL = 'https://api-metrika.yandex.ru/stat/v1/'
 
     def get_count_visits(self, counter_id):
         url = urljoin(self._STAT_URL, 'data')
@@ -69,11 +71,13 @@ class YandexMetric(object):
         visits_count = response.json()['data'][0]['metrics'][0]
         return visits_count
 
-metrika = YandexMetric(TOKEN)
-pprint(metrika.counter_list())
+
+management = YandexManagement()
+counters = YandexCounters()
+pprint(management.counter_list())
 print('-----------------------------------')
-print('Количество визитов: ', metrika.get_count_visits(44132474))
+print('Количество визитов: ', counters.get_count_visits(44132474))
 print('-----------------------------------')
-print('Количество просмотров: ', metrika.get_count_pageviews(44132474))
+print('Количество просмотров: ', counters.get_count_pageviews(44132474))
 print('-----------------------------------')
-print('Количество пользователей: ', metrika.get_count_users(44132474))
+print('Количество пользователей: ', counters.get_count_users(44132474))
