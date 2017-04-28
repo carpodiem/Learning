@@ -13,8 +13,12 @@ auth_data = {
 
 # print('?'.join((AUTH_URL, urlencode(auth_data))))
 
+_TOKEN = 'AQAAAAAKpzb1AAQxfv_b08ESXEFmglNdM-6MCVI'  # полученный токен
+
 class YandexBase():
-    _TOKEN = 'AQAAAAAKpzb1AAQxfv_b08ESXEFmglNdM-6MCVI'  # полученный токен
+
+    def __init__(self, token = None):
+        self.token = token
 
     def get_header(self):
         return {
