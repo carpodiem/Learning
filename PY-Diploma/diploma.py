@@ -2,6 +2,7 @@ import requests
 import time
 import json
 from pprint import pprint
+import progressbar as pb
 
 """
  ЗАДАНИЕ!
@@ -88,30 +89,38 @@ def is_members(user_groups, user_friends):
     skeleton_groups = []
     params['user_id'] = ''
     n = (len(user_friends) // 200) + 1
-    for group in user_groups:
-        group_id = group['id']
-        params['group_id'] = group_id
-        members_count = 0
-        if n > 2:
-            for i in range(n):
-                while True:
-                    try:
-                        params['user_ids'] = str(user_friends[(i * 200):(i * 200 + 199)])
-                        response = requests.get('https://api.vk.com/method/groups.isMember', params)
-                        members_count += counter(response.json()['response'])
-                        break
-                    except KeyError:
-                        print('Слишком быстро!')
-                        time.sleep(2)
-                time.sleep(0.4)
-        else:
-            params['user_ids'] = user_friends
-            response = requests.get('https://api.vk.com/method/groups.isMember', params)
-            members_count = counter(response.json()['response'])
-        if members_count == 0:
-            print('Найдена группа: ', group_id)
-            skeleton_groups.append(group_id)
-        print('+')
+    with pb.ProgressBar(max_value=len(user_groups), widgets=[
+        ' [', pb.Timer('Прошло времени: %(elapsed)s'), '] ',
+        '[', pb.SimpleProgress(), '] ',
+        pb.Bar(),
+        ' (', pb.ETA(
+            format_not_started='Оставшееся время: --:--:--',
+            format_zero='Оставшееся время: 00:00:00',
+            format='Оставшееся время: %(eta)s'
+        ), ') ', ' ' * 40
+    ]) as bar:
+        for t, group in enumerate(user_groups):
+            group_id = group['id']
+            params['group_id'] = group_id
+            members_count = 0
+            if n > 2:
+                for i in range(n):
+                    while True:
+                        try:
+                            params['user_ids'] = str(user_friends[(i * 200):(i * 200 + 199)])
+                            response = requests.get('https://api.vk.com/method/groups.isMember', params)
+                            members_count += counter(response.json()['response'])
+                            break
+                        except KeyError:
+                            time.sleep(2)
+                    time.sleep(0.4)
+            else:
+                params['user_ids'] = user_friends
+                response = requests.get('https://api.vk.com/method/groups.isMember', params)
+                members_count = counter(response.json()['response'])
+            if members_count == 0:
+                skeleton_groups.append(group_id)
+            bar.update(t)
     return skeleton_groups
 
 
@@ -132,7 +141,6 @@ def get_group_info(group_ids):
                 "members_count": group['members_count']
             }]
         )
-    pprint(groups_info)
     return groups_info
 
 
