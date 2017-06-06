@@ -27,24 +27,18 @@ params = {
 
 pool = requests.Session()
 
-"""
-Функция записи в JSON файл
-"""
-
 
 def list_to_file(list_of_data, file_name):
+    """Функция записи в JSON файл"""
     with open(file_name, 'w', encoding='utf_8') as vk_list_file:
         json.dump(list_of_data, vk_list_file, ensure_ascii=False, indent=2)
     print('Записано в файл: ', file_name)
 
 
-"""
-Добавили функцию для запросов к VK.
-В качестве параметров принимает параметры для запроса и имя метода (по-умолчанию, isMember)
-"""
-
-
 def vk_request(parameters, vk_method='groups.isMember'):
+    """Добавили функцию для запросов к VK.
+    В качестве параметров принимает параметры для запроса и имя метода (по-умолчанию, isMember)
+    """
     pool.params = parameters
     url = 'https://api.vk.com/method/' + vk_method
     while True:
@@ -55,12 +49,8 @@ def vk_request(parameters, vk_method='groups.isMember'):
             time.sleep(2)
 
 
-"""
-Получаем список друзей пользователя
-"""
-
-
 def get_friends():
+    """Получаем список друзей пользователя"""
     friends_list = list()
     params['fields'] = 'nickname'
     friends = vk_request(params, 'friends.get').json()['response']['items']
@@ -74,13 +64,8 @@ def get_friends():
     return friends_list
 
 
-"""
-Получаем множество групп пользователя. 
-Оптимизировали ошибки 
-"""
-
-
 def get_usergroups(user_id=None):
+    """Получаем множество групп пользователя. Оптимизировали ошибки."""
     if user_id:
         params['user_id'] = user_id
     params['extended'] = '1'
@@ -101,24 +86,20 @@ def get_usergroups(user_id=None):
     return user_groups, groups_count
 
 
-"""
-Счетчик, для того, чтобы считать количество друзей, состоящих в той же группе
-"""
-
-
 def counter(json_members):
+    """
+    Счетчик, для того, чтобы считать количество друзей, состоящих в той же группе
+    """
     count = 0
     for member in json_members:
         count += member['member']
     return count
 
 
-"""
-Поиск по группам, смотрим с помощью метода groups.isMember, есть ли друг в той же группе, где и целевой пользователь
-"""
-
-
 def is_members(user_groups, user_friends, friends_q):
+    """Поиск по группам, смотрим с помощью метода groups.isMember,
+     есть ли друг в той же группе, где и целевой пользователь.
+    """
     skeleton_groups = []
     params['user_id'] = ''
     n = (len(user_friends) // 200) + 1
@@ -155,12 +136,10 @@ def is_members(user_groups, user_friends, friends_q):
     return skeleton_groups
 
 
-"""
-Получаем список с сокращенной информацией по группам (ID, имя, количество участников)
-"""
-
-
 def get_group_info(group_ids):
+    """Получаем список с сокращенной информацией по группам
+     (ID, имя, количество участников)
+    """
     params['group_ids'] = str(group_ids)
     params['fields'] = 'members_count'
     groups = vk_request(params, 'groups.getById').json()['response']
@@ -176,11 +155,10 @@ def get_group_info(group_ids):
     return groups_info
 
 
-"""
-Функция, запускающая последовательность функций для получения результата.
-"""
-
 def process_func(n):
+    """
+    Функция, запускающая последовательность функций для получения результата.
+    """
     curr_user_friends = get_friends()
     curr_user_groups, curr_groups_count = get_usergroups()
     print('Количество групп пользователя: ', curr_groups_count)
@@ -198,12 +176,8 @@ def process_func(n):
     print('Группы пользователя, в которых никто из его друзей не состоит, сохранены в файл!')
 
 
-"""
-Главная функция запуска
-"""
-
-
 def main():
+    """Главная функция запуска"""
     print(
         'Введите количество друзей, '
         'которые также могут состоять в одних группах с пользователем'
